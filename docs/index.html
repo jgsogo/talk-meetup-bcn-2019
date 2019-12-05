@@ -1,0 +1,396 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>Conan | Package management in C++</title>
+
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/black.css">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/monokai.css">
+        <!-- My CSS -->
+        <link href="fontawesome/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/custom.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="my-header">
+            </div>
+
+            <div class="my-foot">
+                <a class="github-button" href="https://github.com/jgsogo/talk-meetup-bcn-2019" data-icon="octicon-eye" aria-label="Watch jgsogo/talk-meetup-bcn-2019 on GitHub">
+                    jgsogo/talk-meetup-bcn-2019
+                </a>
+                <a class="twitter-share-button" rel="me" href="https://twitter.com/intent/tweet">
+                    <link rel="me" href="https://twitter.com/jgsogo">
+                    Tweet @jgsogo
+                </a>
+                <img class="img-inline" src="img/by-nc-sa.png">
+                Javier G. Sogo | Senior software developer |
+                <img class="img-inline" src="img/jfrog-logo.png"> JFrog LTD |
+                <img class="img-inline" src="img/conan-logo.png"> Conan C/C++ Package Manager
+            </div>
+
+
+            <div class="slides">
+                <section data-transition="convex" class="no-footer">
+                    <h1 class="lol">Conan</h1>
+                    <h1><small>Package management in C++</small></h1>
+                    
+                    <div class="speaker-conference">
+                        <div>
+                            <img style="height: 100px;" data-src="img/jfrog-logo.png">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <img style="height: 100px;" data-src="img/conan-logo.png">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <img style="height: 100px;" data-src="img/cpp-logo.png">
+                        </div>
+
+                        <div class="conference">
+                            <hr/>
+                            <p>December 11th, 2019</p>	
+                            <p>C++ Programmer Meetup (BCN)</p>
+                        </div>
+                        <div class="middle"></div>
+                        <div class="speaker">
+                            <hr/>
+                            <p>Javier García Sogo</p>
+                            <p>C++/Python/DevOps... engineer</p>
+                            <p>
+                                <i class="fab fa-twitter"></i>
+                                <i class="fab fa-github"></i>
+                                &nbsp; @jgsogo
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ABOUT ME -->
+                <section class="no-footer text-animation" data-slide-type="author" data-background-color="#414141">
+                    <h3>About me</h3>
+                    <img data-src="images/me.png" class="avatar"/>
+                    <p>Javier G. Sogo</p>
+                    <p>
+                        Software | 
+                        <span class="blue"><b>Conan.io</b></span> |
+                        <span class="green"><b>JFrog</b>&trade;</span>
+                    </p>
+                    <p>
+                        <small>
+                            <img data-src="img/github-logo.svg" class="brand-icon"/>jgsogo
+                                &nbsp;&nbsp;&nbsp;&nbsp; 
+                            <img data-src="img/twitter-logo.svg" class="brand-icon"/>@jgsogo
+                        </small>
+                    </p>
+                    <div class="text-animation-wrapper work-with" prefix="Side projects: ">
+                        <div style="display: none">
+                            <span>Madrid C/C++</span>
+                            <span>NLP</span>
+                            <span>Lingẅars</span>
+                            <span>Data</span>
+                        </div>
+                        <p class="text-animation"></p>
+                    </div>
+                </section>
+
+                <section data-transition="convex">
+                    <section class="no-footer" data-state="darken" data-background="images/tragedia-comedia.jpg" data-background-size="cover">
+                        <h1>Act. I</h1>
+                        <h2>Love and hate</h2>
+
+                        <aside class="notes" data-markdown>
+                            Para preparar esta charla he recorrido todos mis repositorios en Github, desde el principio
+                            de los tiempos hasta hoy. Aquí y ahora quiero compartir mi historia de amor/odio con C++
+                            con todos vosotros.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Work experience (+10y)*</h2>
+                        <div class="credit">*before joining JFrog</div>
+                        <div class="left">
+                            <h4>UPM intern</h4>
+                            <ul class="fragment">
+                                <li>It's own framework</li>
+                                <li><code>xxx::shared_ptr</code></li>
+                                <li>SVN monorepo</li>
+                                <li>without a CI</li>
+                                <li>VS projects</li>
+                            </ul>
+                        </div>
+                        <div class="right">
+                            <h4>Quant developer</h4>
+                            <ul class="fragment">
+                                <li>It's own framework</li>
+                                <li><code>yyy::shared_ptr</code></li>
+                                <li>SVN monorepo</li>
+                                <li>CI</li>
+                                <li>CMake</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section data-background="images/side-project.svg">
+                        <div class="credit">Image: https://howmuchismysideprojectworth.com/</div>
+                        <h1>Side projects!</h1>
+                    </section>
+
+                    <section>
+                        <h2>Let's do some WWW</h2>
+                        <img data-src="images/chimppunch.png" class="stretch">
+                        <!--<p><img data-src="img/python-logo.png" class="img-inline is-transparent"></p>-->
+                        <p>
+                            <span class="fragment">C++</span>
+                            <span class="fragment"><i class="fas fa-long-arrow-alt-right"></i> PHP</span>
+                            <span class="fragment"><i class="fas fa-long-arrow-alt-right"></i><strong> Python</strong></span>
+                            <span class="fragment"><i class="fas fa-long-arrow-alt-right"></i><strong> <i class="fab fa-internet-explorer"></i></strong></span>
+                        </p>
+                        <aside class="notes" data-markdown>
+                            Quería hacer webs, realmente me interesaba manejar una base de datos. Probé cosas en C++ como
+                            Treefrog, Qt (que tenía algo para sacar HTML), también probé PHP (Zend), incluso hice algunos
+                            pinitos para construir mi framework desde cero (JAJAJA). Finalmente opté por Django, el framework
+                            es brutal y la facilidad para añadir cosas... así desembarqué en Python
+                        </aside>
+                    </section>
+
+                    <!--
+                    <section>
+                        <h2>An ORM: queryset-cpp</h2>
+                        <pre><code class="hljs cpp" data-trim data-noescape>
+                            template &lt;template &lt;typename /*TModel*/> class TManager, typename tpk, typename... Args>
+                            class Model final : public BaseModel&lt;Model&lt;TManager, tpk, Args...>, TManager, tpk, Args...> {
+                                using BaseM = BaseModel&lt;Model&lt;TManager, tpk, Args...>, TManager, tpk, Args...>;
+                                public:
+                                    Model() {};
+                                    Model(const typename BaseM::tuple& data) : BaseM(data) {};
+                                    virtual ~Model() {};
+
+                            };
+
+                            // std::get delegate, we not always have a std::tuple here
+                            template &lt;std::size_t I, typename TModel, template &lt;typename /*TModel*/> class TManager, typename tpk, typename... Args>
+                            auto getter(const qs::BaseModel&lt;TModel, TManager, tpk, Args...>& item) {
+                                return item.template get&lt;I>();
+                            }
+                        </code></pre>
+                        <p>
+                            <span class="fragment">C++11</span>
+                            <span class="fragment"><i class="fas fa-long-arrow-alt-right"></i> C++14</span>
+                            <span class="fragment"><i class="fas fa-long-arrow-alt-right"></i><strong> <i class="fas fa-sad-tear"></i> (sqlcpp11)</strong></span>
+                        </p>
+
+                        <aside class="notes" data-markdown>
+                            Vi que Django era bueno, que tenía un ORM potente. Llegaron las variadics a C++, el boom de
+                            las tuplas, yo quería estar allí. Código excesivamente complejo. Todo escrito desde cero
+                        </aside>
+                    </section>
+                    -->
+
+                    <section data-state="darken" data-background="images/neutron-arquitectura.png" data-background-size="contain">
+                        <h2 class="box-shadow-black">NLP</h2>
+                        <div class="left fragment box-shadow-black">
+                            <h4>Python</h4>
+                            <ul>
+                                <li>Web (backend)</li>
+                                <li>Scraping</li>
+                                <li>Orchestration</li>
+                                <li>Data preparation</li>
+                                <li>DB layer</li>
+                            </ul>
+                        </div>
+                        <div class="right fragment box-shadow-black">
+                            <h4>C++</h4>
+                            <ul>
+                                <li>Read CSV</li>
+                                <li>Process data</li>
+                                <li>Write CSV</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2>Twitter bot</h2>
+                        <img data-src="images/tw-estudiahistoria.png" class="stretch"/>
+                        <p>
+                            Scrape, classify (NLP), monitor, tweet
+                            <span class="fragment"><i class="fas fa-long-arrow-alt-right"></i>&nbsp;<i class="fab fa-python"></i></span>
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2>Telegram bot</h2>
+                        <img data-src="images/wallapop-monitor.png" class="stretch"/>
+                        <p>
+                            Commands, scrape, bot
+                            <span class="fragment"><i class="fas fa-long-arrow-alt-right"></i>&nbsp;<i class="fab fa-python"></i></span>
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2>ADIF + Renfe</h2>
+                        <iframe width="100%" height="520" frameborder="0" src="https://jgsogo.cartodb.com/viz/1f707e86-613c-11e5-a7e5-0e9d821ea90d/embed_map" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+                    </section>
+
+                    <section>
+                        <h2>C++ side projects</h2>
+                        <p class="fragment">All speculative</p>
+                        <p class="fragment"><i class="fab fa-linux"></i>&nbsp;&nbsp;&nbsp;<code>make && sudo make install</code></p>
+                        <p class="fragment"><i class="fab fa-windows"></i>&nbsp;?</p>
+
+                        <aside class="notes" data-markdown>
+                            Todos los proyectos de C++ han sido especulativos, o probar features del lenguaje,
+                            o reescribir alguna utilidad,... pero realmente ninguna ha producido nada que
+                            pueda enseñaros funcionando.
+                            ¿Y cómo ejecutar ese programa en la raspberry?
+                        </aside>
+                    </section>
+
+                    <section>
+                        <img class="is-transparent" data-src="images/languages.png"/>
+                        <p>I want my job done!</p>
+
+                        <aside class="notes" data-markdown>
+                            No hay programadores junior, el lenguaje tiene una barrera de acceso tremenda, y la
+                            gente muchas veces quiere ver los resultados.
+                            ¿Qué lenguaje es mejor? Hay muy diferentes maneras de compararlos, pero si estamos
+                            aquí es porque creemos que a C++ todavía le queda recorrido.
+                        </aside>
+                    </section>
+
+                </section>
+
+                <section data-transition="convex">
+                    <section data-state="darken" data-background="images/child-dream.png" data-background-size="cover">
+                        <h1>Act. II</h1>
+                        <h2>I have a dream</h2>
+                    </section>
+                </section>
+
+                <section>
+                    <section data-state="darken" data-background="img/conan-logo.png" data-background-repeat="repeat" data-background-size="20px">
+                        <h1>Act. III</h1>
+                        <h2>Conan, C/C++ package manager</h2>
+                    </section>
+                </section>
+
+                <section data-transition="convex">
+                    <section class="no-footer">
+                        <h2>Conclusions</h2>
+                        <ul>
+                            <li class="fragment">It's really easy to use C++ with Godot</li>
+                            <li class="fragment">Use _any_ C++ library available</li>
+                            <li class="fragment">Help with performance</li>
+                            <li class="fragment">You need to generate those binaries yourself...</li>
+                            <li class="fragment">... for all the platforms (@conan_io we'll help you)</li>
+                        </ul>
+                    </section>
+
+                </section>
+
+                <!--
+                    Bibliography:
+                     * https://github.com/GodotNativeTools/godot-cpp
+
+                -->
+
+                <section data-transition="convex" class="no-footer">
+                    <h1 class="lol">GDNative</h1>
+                    <h1><small>Using C++ inside Godot</small></h1>
+                    
+                    <div class="speaker-conference">
+                        <div>
+                            <img style="height: 100px;" data-src="img/godot-logo.png">
+                            <i class="fab fa-gratipay"></i>
+                            <img style="height: 100px;" data-src="img/cpp-logo.png">
+                        </div>
+
+                        <div class="conference">
+                            <hr/>
+                            <p>21 de noviembre de 2019</p>	
+                            <p>Madrid C/C++ User Group</p>
+                            
+                        </div>
+                        <div class="middle"></div>
+                        <div class="speaker">
+                            <hr/>
+                            <p>Javier García Sogo</p>
+                            <p>
+                                    C++/Python/DevOps... engineer
+                            </p>
+                            <p>
+                                <i class="fab fa-twitter"></i>
+                                <i class="fab fa-github"></i>
+                                &nbsp; @jgsogo
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+        <script src="js/reveal.js"></script>
+        <script src="js/jquery-3.4.1.min.js"></script>
+        <script src="js/custom.js"></script>
+        <script src="js/text-animation.js"></script>
+
+        <!-- Social buttons -->
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+        <script>
+
+            // More info about config & dependencies:
+            // - https://github.com/hakimel/reveal.js#configuration
+            // - https://github.com/hakimel/reveal.js#dependencies
+            Reveal.initialize({
+                history: true,
+                slideNumber: true,
+                previewLinks: true,
+                pdfSeparateFragments: false,
+                pdfMaxPagesPerSlide: 1,
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/highlight/highlight.js', async: true },
+                ]
+            });
+            Reveal.addEventListener( 'ready', function( event ) {
+                setTimeout(function () {
+                    footer_visibility(event.currentSlide, Reveal.isSpeakerNotes());
+                }, 100);
+            });
+
+            var animated_elements = []
+            var animated_histograms = []
+            Reveal.addEventListener( 'slidechanged', function( event ) {
+                setTimeout(function () {
+                    footer_visibility(event.currentSlide, Reveal.isSpeakerNotes());
+                }, 100);
+
+                // Start text-animation
+                animated_elements.forEach(function(elem) {elem.stop = true;});
+                animated_elements.length = 0;
+                $(event.currentSlide).find(".text-animation-wrapper").each(function(){
+                    var data = animate_element($(this));
+                    animated_elements.push(data);
+                });
+                
+            });
+        </script>
+    </body>
+</html>
