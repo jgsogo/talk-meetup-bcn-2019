@@ -407,7 +407,12 @@
 
                     <section>
                         <h2>Create an application</h2>
-                        <p>Consuming some libraries</p>
+                        <p>
+                            Consuming some libraries (
+                                <a href="https://bintray.com/conan/conan-center" target="_blank"><i class="fas fa-cubes"></i></a> |
+                                <a href="https://github.com/conan-io/conan-center-index" target="_blank"><i class="fab fa-github"></i></a>
+                                )
+                        </p>
                         <pre><code class="hljs ini" data-trim data-noescape>
                             [requires]
                         </code></pre>
@@ -417,19 +422,53 @@
                             cmake
                             cmake_find_package
                         </code></pre>
+
+                        <aside class="notes" data-markdown>
+                            A word about Conan Center Index (I have some links there!)
+                        </aside>
                     </section>
 
                     <section>
-                        <h2>Grafo</h2>
+                        <h2>Graph of dependencies</h2>
+                        <!-- TODO: Add image -->
+                    </section>
+
+                    <section data-background="images/packaging.jpg" data-background-size="cover">
+                        <div class="box-shadow-black">
+                            <h2>Contribute your packages</h2>
+                            <aside class="notes" data-markdown>
+                                * Public ones: conan-center-index
+                                * Private ones: Artifactory C/C++
+                            </aside>
+                        </div>
                     </section>
 
                     <section>
-                        <h2>Crear paquetes</h2>
+                        <h2>conanfile.py</h2>
+                        <pre><code class="hljs python" data-trim data-noescape>
+                            from conans import ConanFile, CMake
+
+                            class MyRecipe(ConanFile):
+                                name = "name"
+                                version = "version"
+
+                                settings = "os", "arch", "compiler", "build_type"
+                                requires = ""
+
+                                scm = ...
+
+                                def build(self):
+                                    cmake = CMake(self)
+                                    cmake.configure()
+                                    cmake.build()
+
+                                def package(self):
+                                    cmake = CMake(self)
+                                    cmake.configure()
+                                    cmake.install()
+                        </code></pre>
                     </section>
 
-                    <section>
-                        <h2>conan-center-index</h2>
-                    </section>
 
                 </section>
 
@@ -454,28 +493,12 @@
                 </section>
 
                 <section data-transition="convex">
-                    <section data-state="darken" data-background="img/conan-logo.png" data-background-repeat="repeat" data-background-size="20px">
-                        <h1>Act. V</h1>
-                        <h2>C++ ecosystem is ready, and you?</h2>
+                    <section data-background="images/back-to-the-future.jpg" data-background-size="cover">
+                        <p class="spacer"></p>
+                        <p class="spacer"></p>
+                        <h2>C++ ecosystem is ready</h2>
+                        <h1>and you?</h1>
                     </section>
-                </section>
-
-                <section data-transition="convex">
-                    <section>
-                        <h2>Next in Conan (under development)</h2>
-                    </section>
-
-                    <section>
-                        <h2>Conan days</h2>
-                    </section>
-
-                    <section class="no-footer">
-                        <h2>Take aways</h2>
-                        <ul>
-                            <li class="fragment">It's really easy to use C++ with Godot</li>
-                        </ul>
-                    </section>
-
                 </section>
 
                 <!--
@@ -516,6 +539,17 @@
                     </div>
                 </section>  
 
+                <section data-transition="convex">
+                    <section>
+                        <h2>Next in Conan (under development)</h2>
+                    </section>
+
+                    <section>
+                        <h2>Conan days</h2>
+                    </section>
+
+                </section>
+
             </div>
         </div>
 
@@ -536,7 +570,7 @@
             Reveal.initialize({
                 history: true,
                 slideNumber: true,
-                previewLinks: true,
+                previewLinks: false,
                 pdfSeparateFragments: false,
                 pdfMaxPagesPerSlide: 1,
                 dependencies: [
