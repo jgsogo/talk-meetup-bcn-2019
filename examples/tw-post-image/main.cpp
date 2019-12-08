@@ -16,6 +16,7 @@ const char* access_token = std::getenv("TWITTER_ACCESS_TOKEN");
 const char* access_token_secret = std::getenv("TWITTER_ACCESS_TOKEN_SECRET");
 
 int post_image(const char* image);
+int post_message(std::string message);
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
@@ -36,6 +37,7 @@ int main(int argc, char *argv[]) {
     
     curl_global_init(CURL_GLOBAL_DEFAULT);
     auto image_ret = post_image(image);
+    //post_message("This is a test");
     curl_global_cleanup();
 }
 
@@ -54,19 +56,31 @@ int post_image(const char* image) {
 
     auto curl = curl_easy_init();
 
+    auto form = curl_mime_init(curl);
+    auto field = curl_mime_addpart(form);
+    curl_mime_name(field, "media");
+    curl_mime_filedata(field, image);
+    curl_easy_setopt(curl, CURLOPT_MIMEPOST, form);
+
+    struct curl_slist *headerlist = NULL;
+    static const char buf[] = "Expect:";
+    headerlist = curl_slist_append(headerlist, buf);
+    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headerlist);
+
+
     std::ostringstream os;
-    os << "https://upload.twitter.com/1.1/media/upload.json?media_category=tweet_image";
+    os << "https://upload.twitter.com/1.1/media/upload.json?media_category=tweet_image&media=@" << image;
 
     auto r = oauth_sign_url2(os.str().c_str(), nullptr, OA_HMAC, "POST", api_key, api_secret_key, access_token, access_token_secret);
     curl_easy_setopt(curl, CURLOPT_URL, r);
-    curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
-    curl_easy_setopt(curl, CURLOPT_READDATA, fd);
-    curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)file_info.st_size);
-    curl_easy_setopt(curl, CURLOPT_POST, 1L);
+    //curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+    //curl_easy_setopt(curl, CURLOPT_READDATA, fd);
+    //curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)file_info.st_size);
+    //curl_easy_setopt(curl, CURLOPT_POST, 1L);
     curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
     //curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "");
-    curl_easy_setopt(curl, CURLOPT_USERAGENT, "Console client");
-    curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
+    //curl_easy_setopt(curl, CURLOPT_USERAGENT, "Console client");
+    //curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
 
     auto status = curl_easy_perform(curl);
     std::cout << "Status: " << status << "\n";
@@ -74,8 +88,8 @@ int post_image(const char* image) {
     return 0;
 }
 
-/*
-int post_message() {
+
+int post_message(std::string message) {
     auto curl = curl_easy_init();
 
     std::ostringstream os;
@@ -93,6 +107,6 @@ int post_message() {
     std::cout << "Status: " << status << "\n";
 
     curl_easy_cleanup(curl);
-    
+    return 0;
 }
-*/
+
