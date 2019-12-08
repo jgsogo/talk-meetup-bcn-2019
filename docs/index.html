@@ -445,6 +445,7 @@
 
                     <section>
                         <h2>conanfile.py</h2>
+                        <p>1) Declare your settings and dependencies</p>
                         <pre><code class="hljs python" data-trim data-noescape>
                             from conans import ConanFile, CMake
 
@@ -454,40 +455,91 @@
 
                                 settings = "os", "arch", "compiler", "build_type"
                                 requires = ""
+                                generators = "cmake", "cmake_find_package"
+                        </code></pre>
+                    </section>
 
-                                scm = ...
+                    <section>
+                        <h2>conanfile.py</h2>
+                        <p>2) Where to get the sources</p>
+                        <pre><code class="hljs python" data-trim data-noescape>
+                            from conans import ConanFile, CMake, tools
+
+                            class MyRecipe(ConanFile):
+                                ...
+
+                                # Use magic if recipe and sources are in the same repository
+                                scm = {"type": "git",
+                                       "revision": "auto",
+                                       "url": "auto"}
+
+                                def source(self):
+                                    # Write your own function
+                                    tools.get(url="...", sha1="...")
+                                    os.rename("name-version", "source_folder")
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h2>conanfile.py</h2>
+                        <p>3) How to build your library</p>
+                        <pre><code class="hljs python" data-trim data-noescape>
+                            from conans import ConanFile, CMake, tools
+
+                            class MyRecipe(ConanFile):
+                                ...
 
                                 def build(self):
                                     cmake = CMake(self)
                                     cmake.configure()
                                     cmake.build()
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h2>conanfile.py</h2>
+                        <p>4) What to package</p>
+                        <pre><code class="hljs python" data-trim data-noescape>
+                            from conans import ConanFile, CMake, tools
+
+                            class MyRecipe(ConanFile):
+                                ...
 
                                 def package(self):
                                     cmake = CMake(self)
                                     cmake.configure()
                                     cmake.install()
+                                    self.copy("LICENSE.txt", dst="licenses", src=self._source_subfolder)
                         </code></pre>
                     </section>
 
-
+                    <section>
+                        <h2>Publish your package</h2>
+                        <p>Create the package</p>
+                        <pre><code class="hljs cmd" data-trim data-noescape>
+                            conan create path/to/conanfile.py --profile=macos-11-release
+                        </code></pre>
+                        <p>Upload to your server</p>
+                        <pre><code class="hljs cmd" data-trim data-noescape>
+                            conan upload name/version@ --all --remote=my-private
+                        </code></pre>
+                    </section>
                 </section>
 
                 <section data-transition="convex">
-                    <section data-state="darken" data-background="img/conan-logo.png" data-background-repeat="repeat" data-background-size="20px">
+                    <section data-state="darken" data-background="images/investors-board.jpg" data-background-repeat="cover">
                         <h1>Act. IV</h1>
                         <h2>Conan at your company</h2>
                     </section>
 
                     <section>
-                        <h2>Divide your monolith</h2>
-                    </section>
-
-                    <section>
-                        <h2>Reduce CI times</h2>
-                    </section>
-
-                    <section>
-                        <h2>Divide your monolith</h2>
+                        <h2>Major pains</h2>
+                        <ul class="fragment">
+                            <li>Divide your monolith</li>
+                            <li>Developers: less to compile</li>
+                            <li>DevOps: reduce CI times</li>
+                            <li>Trazability and reproducibility</li>
+                        </ul>
                     </section>
 
                 </section>
