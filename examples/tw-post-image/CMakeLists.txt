@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(libcurl)
 find_package(liboauth)
+find_package(jansson)
 
-add_executable(tw-post-image main.cpp base64.c)
-target_link_libraries(tw-post-image PRIVATE libcurl::libcurl liboauth::liboauth)
+add_executable(tw-post-image main.cpp)
+target_link_libraries(tw-post-image PRIVATE libcurl::libcurl jansson::jansson liboauth::liboauth)

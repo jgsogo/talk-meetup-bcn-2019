@@ -6,8 +6,7 @@
 #include <sys/stat.h>
 #include <curl/curl.h>
 #include <oauth.h>
-
-#include "base64.h"
+#include "jansson.h"
 
 
 const char* api_key = std::getenv("TWITTER_API_KEY");
@@ -15,8 +14,8 @@ const char* api_secret_key = std::getenv("TWITTER_API_SECRET_KEY");
 const char* access_token = std::getenv("TWITTER_ACCESS_TOKEN");
 const char* access_token_secret = std::getenv("TWITTER_ACCESS_TOKEN_SECRET");
 
-int post_image(const char* image);
-int post_message(std::string message);
+std::string post_image(const char* image);
+int post_message(std::string message, std::string media_id_string);
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
@@ -36,24 +35,36 @@ int main(int argc, char *argv[]) {
 
     
     curl_global_init(CURL_GLOBAL_DEFAULT);
-    auto image_ret = post_image(image);
-    //post_message("This is a test");
+    auto media_id_string = post_image(image);
+    post_message("This is a test", media_id_string);
     curl_global_cleanup();
 }
 
-int post_image(const char* image) {
-    struct stat file_info;
-    FILE* fd = fopen(image, "rb"); /* open file to upload */ 
-    if(!fd) {
-        std::cerr << "Cannot read file";
-        exit(-1);
-    }
-    /* to get the file size */ 
-    if(fstat(fileno(fd), &file_info) != 0) {
-        exit(-1);
-    }
-    std::cout << "Image '" << image << "' (size: '" << file_info.st_size << "')\n";
+namespace internals {
 
+    constexpr int BUFFER_SIZE = 256 * 1024;  /* 256 KB */
+
+    struct write_result {
+        char *data;
+        int pos;
+    };
+
+    static size_t write_response(void* ptr, size_t size, size_t nmemb, void* stream) {
+        struct write_result *result = (struct write_result *) stream;
+
+        if (result->pos + size * nmemb >= BUFFER_SIZE - 1) {
+            fprintf(stderr, "error: too small buffer\n");
+            return 0;
+        }
+
+        memcpy(result->data + result->pos, ptr, size * nmemb);
+        result->pos += size * nmemb;
+
+        return size * nmemb;
+    }
+}
+
+std::string post_image(const char* image) {
     auto curl = curl_easy_init();
 
     auto form = curl_mime_init(curl);
@@ -62,38 +73,47 @@ int post_image(const char* image) {
     curl_mime_filedata(field, image);
     curl_easy_setopt(curl, CURLOPT_MIMEPOST, form);
 
-    struct curl_slist *headerlist = NULL;
-    static const char buf[] = "Expect:";
-    headerlist = curl_slist_append(headerlist, buf);
-    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headerlist);
-
-
     std::ostringstream os;
     os << "https://upload.twitter.com/1.1/media/upload.json?media_category=tweet_image&media=@" << image;
 
     auto r = oauth_sign_url2(os.str().c_str(), nullptr, OA_HMAC, "POST", api_key, api_secret_key, access_token, access_token_secret);
     curl_easy_setopt(curl, CURLOPT_URL, r);
-    //curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
-    //curl_easy_setopt(curl, CURLOPT_READDATA, fd);
-    //curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)file_info.st_size);
-    //curl_easy_setopt(curl, CURLOPT_POST, 1L);
     curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-    //curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "");
-    //curl_easy_setopt(curl, CURLOPT_USERAGENT, "Console client");
-    //curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
+    curl_easy_setopt(curl, CURLOPT_USERAGENT, "Console client");
+    curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
 
+    struct internals::write_result write_result = {
+                .data = (char*)malloc(internals::BUFFER_SIZE),
+                .pos = 0
+        };
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, internals::write_response);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &write_result);
     auto status = curl_easy_perform(curl);
-    std::cout << "Status: " << status << "\n";
-    std::cout << curl_easy_strerror(status) << "\n";
-    return 0;
+    write_result.data[write_result.pos] = '\0';
+
+    // Parse JSON
+    json_error_t error;
+    json_t* root = json_loads(write_result.data, 0, &error);
+    free(write_result.data);
+
+    json_t* id_str = json_object_get(root, "media_id_string");
+    std::string media_id_string = json_string_value(id_str);
+
+    std::cout << "Status: " << write_result.data << "\n";
+    std::cout << "std::string media_id_string: " << media_id_string << "\n";
+    //std::cout << curl_easy_strerror(status) << "\n";
+    json_decref(root);
+    curl_easy_cleanup(curl);
+    return media_id_string;
 }
 
 
-int post_message(std::string message) {
+int post_message(std::string message, std::string media_id_string) {
     auto curl = curl_easy_init();
 
     std::ostringstream os;
     os << "https://api.twitter.com/1.1/statuses/update.json?status=" << curl_easy_escape(curl, message.c_str(), message.size());
+    os << "&media_ids=" << media_id_string;
 
     auto r = oauth_sign_url2(os.str().c_str(), nullptr, OA_HMAC, "POST", api_key, api_secret_key, access_token, access_token_secret);
     curl_easy_setopt(curl, CURLOPT_URL, r);
@@ -103,7 +123,9 @@ int post_message(std::string message) {
     curl_easy_setopt(curl, CURLOPT_USERAGENT, "Console client");
     curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
 
+
     auto status = curl_easy_perform(curl);
+    
     std::cout << "Status: " << status << "\n";
 
     curl_easy_cleanup(curl);

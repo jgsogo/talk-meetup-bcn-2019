@@ -1,6 +1,7 @@
 [requires]
 libcurl/7.66.0
 liboauth/1.0.3
+jansson/2.12
 
 [generators]
 cmake
