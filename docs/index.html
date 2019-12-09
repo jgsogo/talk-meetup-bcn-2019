@@ -455,7 +455,7 @@
                 </section>
 
                 <section data-transition="convex">
-                    <section data-state="darken" data-background="img/conan-logo.png" data-background-repeat="repeat" data-background-size="20px">
+                    <section data-state="darken" data-background="img/conan-logo.png" data-background-repeat="repeat" data-background-size="40px">
                         <h1>Act. III</h1>
                         <h2>Conan, C/C++ package manager</h2>
                     </section>
@@ -563,7 +563,7 @@
                     </section>
 
                     <section>
-                        <h2>Create an application</h2>
+                        <h2>Hello world! application</h2>
                         <p>
                             Consuming some libraries (
                                 <a href="https://bintray.com/conan/conan-center" target="_blank"><i class="fas fa-cubes"></i></a> |
@@ -572,6 +572,7 @@
                         </p>
                         <pre><code class="hljs ini" data-trim data-noescape>
                             [requires]
+                            hellolib/1.0
                         </code></pre>
                         <p>Using CMake</p>
                         <pre><code class="hljs ini" data-trim data-noescape>
@@ -595,7 +596,7 @@
                             <h2>Contribute your packages</h2>
                             <aside class="notes" data-markdown>
                                 * Public ones: conan-center-index
-                                * Private ones: Artifactory C/C++
+                                * Private ones: Artifactory C/C++ (free)
                             </aside>
                         </div>
                     </section>
@@ -671,8 +672,8 @@
                     </section>
 
                     <section>
-                        <h2>Publish your package</h2>
-                        <p>Create the package</p>
+                        <h2>Publish your package (CI)</h2>
+                        <p>Create/Test the package</p>
                         <pre><code class="hljs cmd" data-trim data-noescape>
                             conan create path/to/conanfile.py --profile=macos-11-release
                         </code></pre>
@@ -681,6 +682,14 @@
                             conan upload name/version@ --all --remote=my-private
                         </code></pre>
                     </section>
+
+                    <!-- 
+                        Aquí estoy trabajando con hellolib, estoy
+                            * explicando las partes del paquete (jugando en local)
+                            * puedo hacer el commit/push
+                            * puedo hacer el PR en el repo de Github
+                            * podré consumir el paquete en Artifactory
+                    -->
                 </section>
 
                 <section data-transition="convex">
@@ -699,6 +708,17 @@
                         </ul>
                     </section>
 
+                    <section>
+                        <h2>What <span class="blue">Conan</span> offers</h2>
+                        <ul class="fragment">
+                            <li>Take advantage of community contributed recipes</li>
+                            <li>Package your own libraries</li>
+                            <li>Keep using your existing build system</li>
+                            <li>Integrate with <span class="green">Artifactory</span>, all your binaries together</li>
+                        </ul>
+                    </section>
+
+                    
                 </section>
 
                 <section data-transition="convex">
