@@ -6,8 +6,6 @@
 #include <curl/curl.h>
 #include <oauth.h>
 
-const char* endpoint = "https://stream.twitter.com/1.1/statuses/sample.json";
-
 int main() {
     const char* api_key = std::getenv("TWITTER_API_KEY");
     const char* api_secret_key = std::getenv("TWITTER_API_SECRET_KEY");
@@ -15,11 +13,8 @@ int main() {
     const char* access_token_secret = std::getenv("TWITTER_ACCESS_TOKEN_SECRET");
 
     std::cout << "TWITTER_API_KEY: '" << api_key << "'\n";
-    //std::cout << "TWITTER_API_SECRET_KEY: '" << api_secret_key << "'\n";
     std::cout << "TWITTER_ACCESS_TOKEN: '" << access_token << "'\n";
-    //std::cout << "TWITTER_ACCESS_TOKEN_SECRET: '" << access_token_secret << "'\n";
-    
-    
+
     const std::string message = "This is a test message";
 
     curl_global_init(CURL_GLOBAL_DEFAULT);
@@ -31,14 +26,13 @@ int main() {
     auto r = oauth_sign_url2(os.str().c_str(), nullptr, OA_HMAC, "POST", api_key, api_secret_key, access_token, access_token_secret);
     curl_easy_setopt(curl, CURLOPT_URL, r);
     curl_easy_setopt(curl, CURLOPT_POST, 1L);
-    //curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "");
     curl_easy_setopt(curl, CURLOPT_USERAGENT, "Console client");
     curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
 
     auto status = curl_easy_perform(curl);
-    std::cout << "Status: " << status << "\n";
 
     curl_easy_cleanup(curl);
     curl_global_cleanup();
+    return 0;
 }
