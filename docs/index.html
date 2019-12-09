@@ -455,29 +455,70 @@
                         <pre><code class="hljs python" data-trim data-noescape>
                             from conans import ConanFile, CMake
 
-                            class MyRecipe(ConanFile):
-                                name = "name"
-                                version = "version"
+                            class HelloLib(ConanFile):
+                                name = "hellolib"
+                                version = "1.0"
 
                                 settings = "os", "arch", "compiler", "build_type"
-                                requires = ""
-                                generators = "cmake", "cmake_find_package"
+                                options = {"shared": [True, False]}
+                                default_options = {"shared": False}
+
+                                requires = "fmt/6.0.0"
                         </code></pre>
                     </section>
 
-                    <section>
+                    <section data-transition="fade-out">
                         <h2>conanfile.py</h2>
                         <p>2) Where to get the sources</p>
-                        <pre><code class="hljs python" data-trim data-noescape>
-                            from conans import ConanFile, CMake, tools
+                        <pre><code class="hljs python" data-trim data-noescape data-line-numbers="1-5">
+                            from conans import ConanFile, CMake
 
-                            class MyRecipe(ConanFile):
+                            class HelloLib(ConanFile):
                                 ...
+                                exports_sources = "include/*", "src/*", "CMakeLists.txt", "README.md"
+                                # scm = {"type": "git",
+                                #        "revision": "auto",
+                                #        "url": "auto"}
 
-                                # Use magic if recipe and sources are in the same repository
+                                # def source(self):
+                                #     # Write your own function
+                                #     tools.get(url="...", sha1="...")
+                                #     os.rename("name-version", "source_folder")
+                        </code></pre>
+                    </section>
+
+                    <section data-transition="fade-in fade-out">
+                        <h2>conanfile.py</h2>
+                        <p>2) Where to get the sources</p>
+                        <pre><code class="hljs python" data-trim data-noescape data-line-numbers="1-4, 6-8">
+                            from conans import ConanFile, CMake
+
+                            class HelloLib(ConanFile):
+                                ...
+                                # exports_sources = "include/*", "src/*", "CMakeLists.txt", "README.md"
                                 scm = {"type": "git",
                                        "revision": "auto",
                                        "url": "auto"}
+
+                                # def source(self):
+                                #     # Write your own function
+                                #     tools.get(url="...", sha1="...")
+                                #     os.rename("name-version", "source_folder")
+                        </code></pre>
+                    </section>
+
+                    <section data-transition="fade-in">
+                        <h2>conanfile.py</h2>
+                        <p>2) Where to get the sources</p>
+                        <pre><code class="hljs python" data-trim data-noescape data-line-numbers="1-4, 10-13">
+                            from conans import ConanFile, CMake
+
+                            class HelloLib(ConanFile):
+                                ...
+                                # exports_sources = "include/*", "src/*", "CMakeLists.txt", "README.md"
+                                # scm = {"type": "git",
+                                #        "revision": "auto",
+                                #        "url": "auto"}
 
                                 def source(self):
                                     # Write your own function
@@ -492,8 +533,9 @@
                         <pre><code class="hljs python" data-trim data-noescape>
                             from conans import ConanFile, CMake, tools
 
-                            class MyRecipe(ConanFile):
+                            class HelloLib(ConanFile):
                                 ...
+                                generators = "cmake", "cmake_find_package"
 
                                 def build(self):
                                     cmake = CMake(self)
@@ -504,11 +546,11 @@
 
                     <section>
                         <h2>conanfile.py</h2>
-                        <p>4) What to package</p>
+                        <p>4) What files to package</p>
                         <pre><code class="hljs python" data-trim data-noescape>
                             from conans import ConanFile, CMake, tools
 
-                            class MyRecipe(ConanFile):
+                            class HelloLib(ConanFile):
                                 ...
 
                                 def package(self):
@@ -520,8 +562,23 @@
                     </section>
 
                     <section>
+                        <h2>conanfile.py</h2>
+                        <p>5) Information for consumers</p>
+                        <pre><code class="hljs python" data-trim data-noescape>
+                            from conans import ConanFile, CMake, tools
+
+                            class HelloLib(ConanFile):
+                                ...
+
+                                def package_info(self):
+                                    self.cpp_info.libs = ["hellolib"]
+                                    self.cpp_info.defines = ["WITH_HELLO_LIB"]
+                        </code></pre>
+                    </section>
+
+                    <section>
                         <h2>Publish your package (CI)</h2>
-                        <p>Create/Test the package</p>
+                        <p>Create/test the package</p>
                         <pre><code class="hljs cmd" data-trim data-noescape>
                             conan create path/to/conanfile.py --profile=macos-11-release
                         </code></pre>
