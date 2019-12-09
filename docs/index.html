@@ -168,39 +168,6 @@
                         </aside>
                     </section>
 
-                    <!--
-                    <section>
-                        <h2>An ORM: queryset-cpp</h2>
-                        <pre><code class="hljs cpp" data-trim data-noescape>
-                            template &lt;template &lt;typename /*TModel*/> class TManager, typename tpk, typename... Args>
-                            class Model final : public BaseModel&lt;Model&lt;TManager, tpk, Args...>, TManager, tpk, Args...> {
-                                using BaseM = BaseModel&lt;Model&lt;TManager, tpk, Args...>, TManager, tpk, Args...>;
-                                public:
-                                    Model() {};
-                                    Model(const typename BaseM::tuple& data) : BaseM(data) {};
-                                    virtual ~Model() {};
-
-                            };
-
-                            // std::get delegate, we not always have a std::tuple here
-                            template &lt;std::size_t I, typename TModel, template &lt;typename /*TModel*/> class TManager, typename tpk, typename... Args>
-                            auto getter(const qs::BaseModel&lt;TModel, TManager, tpk, Args...>& item) {
-                                return item.template get&lt;I>();
-                            }
-                        </code></pre>
-                        <p>
-                            <span class="fragment">C++11</span>
-                            <span class="fragment"><i class="fas fa-long-arrow-alt-right"></i> C++14</span>
-                            <span class="fragment"><i class="fas fa-long-arrow-alt-right"></i><strong> <i class="fas fa-sad-tear"></i> (sqlcpp11)</strong></span>
-                        </p>
-
-                        <aside class="notes" data-markdown>
-                            Vi que Django era bueno, que tenía un ORM potente. Llegaron las variadics a C++, el boom de
-                            las tuplas, yo quería estar allí. Código excesivamente complejo. Todo escrito desde cero
-                        </aside>
-                    </section>
-                    -->
-
                     <section data-state="darken" data-background="images/neutron-arquitectura.png" data-background-size="contain">
                         <h2 class="box-shadow-black">NLP</h2>
                         <div class="left fragment box-shadow-black">
@@ -300,7 +267,7 @@
                         <p class="fragment">Find a nice <a href="https://github.com/jgsogo/talk-meetup-bcn-2019/tree/master/examples/opencv" target="_blank">how-to</a></p>
                         <p class="fragment">It uses <code>opencv/3.4.5</code></p>
                         <img class="fragment is-transparent" data-src="html/opencv.png"/>
-                        <p class="fragment">Good luck!</p>
+                        <p class="fragment"><strong>Piece of cake!</strong> <i class="fas fa-birthday-cake"></i></p>
                     </section>
 
                     <section>
@@ -308,6 +275,15 @@
                         <p class="fragment">Here it is <a href="https://github.com/jgsogo/talk-meetup-bcn-2019/tree/master/examples/tw-post-image" target="_blank">something promising</a></p>
                         <img class="fragment is-transparent" data-src="html/tw-post-image.png"/>
                         <p class="fragment">C libraries, different build systems,...</p>
+                        <p class="fragment"><strong>Child's play!</strong> <i class="fas fa-leaf"></i></p>
+                    </section>
+
+                    <section data-state="darken" data-background="images/inception.jpg" data-background-repeat="cover">
+                        <div class="credit">Photo: Inception (Christopher Nolan, 2010)</div>
+
+                        <aside class="notes" data-markdown>
+                            Consola, let's play the dream
+                        </aside>
                     </section>
 
                     <section>
@@ -353,7 +329,8 @@
 
                     <section data-state="darken" data-background="img/conan-logo.png" data-background-size="contain">
                         <h2>Main features</h2>
-                        <p>Share binaries (distributed as Git)</p>
+                        <p>Reuse binaries (if you want)</p>
+                        <p>Distributed as Git</p>
                         <p>3rd parties & your libraries</p>
                         <p>Non intrusive</p>
 
@@ -428,7 +405,7 @@
                     <section>
                         <h2>Hello world! application</h2>
                         <p>
-                            Consuming some libraries (
+                            Consume some libraries (
                                 <a href="https://bintray.com/conan/conan-center" target="_blank"><i class="fas fa-cubes"></i></a> |
                                 <a href="https://github.com/conan-io/conan-center-index" target="_blank"><i class="fab fa-github"></i></a>
                                 )
@@ -437,7 +414,7 @@
                             [requires]
                             hellolib/1.0
                         </code></pre>
-                        <p>Using CMake</p>
+                        <p>using CMake</p>
                         <pre><code class="hljs ini" data-trim data-noescape>
                             [generators]
                             cmake
