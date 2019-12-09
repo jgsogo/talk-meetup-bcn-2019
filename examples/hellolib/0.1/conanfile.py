@@ -4,6 +4,11 @@ class HelloLib(ConanFile):
     name = "hellolib"
     version = "0.1"
 
+    url = "https://private/to/my/company"
+    homepage = "https://private.com"
+    author = "BCN Meetup C++"
+    topics = "demo", "lib"
+
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False]}
     default_options = {"shared": False}
