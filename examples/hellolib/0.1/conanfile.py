@@ -26,3 +26,6 @@ class HelloLib(ConanFile):
         cmake = self._configure_cmake()
         cmake.install()
         self.copy("README.md", dst=".")
+
+    def package_info(self):
+        self.cpp_info.libs = ["hellolib"]

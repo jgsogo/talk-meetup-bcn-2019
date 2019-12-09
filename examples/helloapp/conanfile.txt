@@ -1,0 +1,6 @@
+[requires]
+fmt/6.0.0
+hellolib/0.1
+
+[generators]
+cmake_find_package
