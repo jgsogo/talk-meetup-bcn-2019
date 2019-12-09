@@ -4,12 +4,12 @@ class HelloLib(ConanFile):
     name = "hellolib"
     version = "0.1"
 
-    settings = "os", "arc", "compiler", "build_type"
+    settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False]}
     default_options = {"shared": False}
 
     generators = "cmake", "cmake_find_package"
-    exports_sources = "include/*", "src/*"
+    exports_sources = "include/*", "src/*", "CMakeLists.txt", "README.md"
 
     requires = "fmt/6.0.0"
 
