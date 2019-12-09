@@ -3,6 +3,7 @@ opencv/3.4.5@conan/stable
 
 [generators]
 cmake
+cmake_find_package
 
 [imports]
 share/OpenCV/haarcascades, haarcascade*.xml -> bin
