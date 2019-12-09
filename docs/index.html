@@ -304,55 +304,10 @@
                     </section>
 
                     <section>
-                        <h2>Post to Twitter</h2>
-                        <pre><code class="hljs cpp" data-trim data-noescape>
-                        #include &lt;iostream>
-                        #include &lt;sstream>
-                        #include &lt;string>
-
-                        #include &lt;curl/curl.h>
-                        #include &lt;oauth.h>
-
-                        int main() {
-                            const char* api_key = std::getenv("TWITTER_API_KEY");
-                            const char* api_secret_key = std::getenv("TWITTER_API_SECRET_KEY");
-                            const char* access_token = std::getenv("TWITTER_ACCESS_TOKEN");
-                            const char* access_token_secret = std::getenv("TWITTER_ACCESS_TOKEN_SECRET");
-
-                            std::cout << "TWITTER_API_KEY: '" << api_key << "'\n";
-                            std::cout << "TWITTER_ACCESS_TOKEN: '" << access_token << "'\n";
-
-                            const std::string message = "This is a test message";
-
-                            curl_global_init(CURL_GLOBAL_DEFAULT);
-                            auto curl = curl_easy_init();
-
-                            std::ostringstream os;
-                            os << "https://api.twitter.com/1.1/statuses/update.json?status=" << curl_easy_escape(curl, message.c_str(), message.size());
-
-                            auto r = oauth_sign_url2(os.str().c_str(), nullptr, OA_HMAC, "POST", api_key, api_secret_key, access_token, access_token_secret);
-                            curl_easy_setopt(curl, CURLOPT_URL, r);
-                            curl_easy_setopt(curl, CURLOPT_POST, 1L);
-                            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "");
-                            curl_easy_setopt(curl, CURLOPT_USERAGENT, "Console client");
-                            curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
-
-                            auto status = curl_easy_perform(curl);
-
-                            curl_easy_cleanup(curl);
-                            curl_global_cleanup();
-                            return 0;
-                        }
-                        </code></pre>
-                        <p><small><a href="https://github.com/jgsogo/talk-meetup-bcn-2019/tree/master/examples/tw-post" target="_blank">Link to sources</a></small></p>
-                    </section>
-
-                    <section class="no-footer" data-background-iframe="html/tw-post-image.html" data-background-interactive data-background-color="#ffffff">
-                        <h2>Twitter</h2>
-                        <p class="spacer">&nbsp;</p>
-                        <p class="spacer">&nbsp;</p>
-                        <p class="spacer">&nbsp;</p>
-                        <p class="spacer">&nbsp;</p>
+                        <h2>Posting to Twitter</h2>
+                        <p class="fragment">Here it is <a href="https://github.com/jgsogo/talk-meetup-bcn-2019/tree/master/examples/tw-post-image" target="_blank">something promising</a></p>
+                        <img class="fragment is-transparent" data-src="html/tw-post-image.png"/>
+                        <p class="fragment">C libraries, different build systems,...</p>
                     </section>
 
                     <section>
