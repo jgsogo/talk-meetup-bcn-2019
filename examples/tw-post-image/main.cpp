@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <fstream>
 
 #include <sys/stat.h>
 #include <curl/curl.h>
@@ -19,10 +20,10 @@ int post_message(std::string message, std::string media_id_string);
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
-        std::cerr << "Pass a path to an image\n"; 
-        return -1;
+        std::cerr << "Pass a path to an image (or use default)\n"; 
+        //return -1;
     }
-    const char* image = argv[1];
+    const char* image = (argc >= 2) ? argv[1] : "/Users/jgsogo/Downloads/bcn.png";
     std::cout << "Will post image at " << image << "\n";
 
     std::cout << "TWITTER_API_KEY: '" << api_key << "'\n";
@@ -36,7 +37,7 @@ int main(int argc, char *argv[]) {
     
     curl_global_init(CURL_GLOBAL_DEFAULT);
     auto media_id_string = post_image(image);
-    post_message("This is a test", media_id_string);
+    post_message(message, media_id_string);
     curl_global_cleanup();
 }
 
@@ -123,11 +124,28 @@ int post_message(std::string message, std::string media_id_string) {
     curl_easy_setopt(curl, CURLOPT_USERAGENT, "Console client");
     curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
 
-
+    struct internals::write_result write_result = {
+        .data = (char*)malloc(internals::BUFFER_SIZE),
+        .pos = 0
+    };
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, internals::write_response);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &write_result);
     auto status = curl_easy_perform(curl);
-    
-    std::cout << "Status: " << status << "\n";
 
+    // Parse JSON
+    json_error_t error;
+    json_t* root = json_loads(write_result.data, 0, &error);
+    free(write_result.data);
+
+    json_t* id_str = json_object_get(root, "id_str");
+    std::string id_tweet = json_string_value(id_str);
+
+    std::ofstream out("/Users/jgsogo/dev/talk-meetup-bcn-2019/docs/bcn.txt");
+    out << id_tweet;
+    out.close();
+
+    json_decref(root);
+    
     curl_easy_cleanup(curl);
     return 0;
 }

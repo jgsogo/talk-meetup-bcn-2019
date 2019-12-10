@@ -629,6 +629,24 @@
 
                 </section>
 
+                <section>
+                    <h2>Thank you!</h2>
+                    <div class="left">
+                        <p id="bcn-tweet-id" class="bcn-tweet"></p>
+                    </div>
+                    <div class="right">
+                        <p>Spread the word <i class="fas fa-bullhorn"></i></p>
+                        <img class="is-transparent" data-src="images/jumping-frog.gif"/>
+                        <!--
+                        <h4>Contact us!</h4>
+                        <p><i class="fab fa-slack"></i> cpplang/#conan</p>
+                        <p><i class="fab fa-twitter"></i> conan_io</p>
+                        <p><i class="fab fa-github"></i> conan-io</p>
+                        <hr/>
+                        <p><i class="fab fa-twitter"></i> jgsogo</p>
+                        -->
+                    </div>
+                </section>
                 <!--
                     Bibliography:
                      * https://github.com/GodotNativeTools/godot-cpp
@@ -718,6 +736,34 @@
                     animated_elements.push(data);
                 });
                 
+                // Show tweet
+                $(event.currentSlide).find(".bcn-tweet").each(function() {
+                    // Get file content and print that tweet
+                    var req = new XMLHttpRequest();
+                    req.onreadystatechange = function() {
+                    if (req.readyState === 4) {
+                        var tweet_id = req.responseText;
+                        console.log(tweet_id);
+
+                        var tweet = $("#bcn-tweet-id");
+                        tweet.empty();
+
+                        twttr.widgets.createTweet(
+                            tweet_id, tweet.get(0), 
+                            {
+                                conversation : 'none',    // or all
+                                cards        : 'visible',  // or visible 
+                                linkColor    : '#cc0000', // default is blue
+                                theme        : 'light'    // or dark
+                            })
+                        .then (function (el) {
+                            //el.contentDocument.querySelector(".footer").style.display = "none";
+                        });
+                    }};
+                    req.open('GET', 'bcn.txt');
+                    req.send(null);
+                    console.log("DONE!!!");
+                });
             });
         </script>
     </body>
