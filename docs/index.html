@@ -330,7 +330,7 @@
                     <section data-state="darken" data-background="img/conan-logo.png" data-background-size="contain">
                         <h2>Main features</h2>
                         <p>Reuse binaries (if you want)</p>
-                        <p>Distributed as Git</p>
+                        <p>Integrates with any build system</p>
                         <p>3rd parties & your libraries</p>
                         <p>Non intrusive</p>
 
@@ -556,14 +556,14 @@
                                 def package(self):
                                     cmake = CMake(self)
                                     cmake.configure()
-                                    cmake.install()
+                                    cmake.install()  # Or copy the files yourself
                                     self.copy("LICENSE.txt", dst="licenses", src=self._source_subfolder)
                         </code></pre>
                     </section>
 
                     <section>
                         <h2>conanfile.py</h2>
-                        <p>5) Information for consumers</p>
+                        <p>5) Information for consumers/generators</p>
                         <pre><code class="hljs python" data-trim data-noescape>
                             from conans import ConanFile, CMake, tools
 
@@ -609,7 +609,7 @@
                             <li>Divide your monolith</li>
                             <li>Developers: less to compile</li>
                             <li>DevOps: reduce CI times</li>
-                            <li>Trazability and reproducibility</li>
+                            <li>Traceability and reproducibility</li>
                         </ul>
                     </section>
 
@@ -634,10 +634,7 @@
                         <h1>and you?</h1>
                     </section>
 
-                    <section>
-                        <h2>Conan days</h2>
-                        <p>si no estás ready, ven a aprender más al Conan Days en Madrid</p>
-                        <!-- Conan Days: si no estás ready, ven a aprender más al Conan Days en Madrid -->
+                    <section data-background-iframe="https://conandays.conan.io/" data-background-interactive data-background-color="#ffffff">
                     </section>
 
                 </section>
