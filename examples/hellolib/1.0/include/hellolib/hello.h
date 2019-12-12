@@ -3,4 +3,4 @@
 
 #include <string>
 
-void hello(const std::string& who);
+void hello(const std::string& who = "v1.0");
